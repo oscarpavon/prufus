@@ -18,3 +18,8 @@ git clone https://github.com/oscarpavon/prufus
 cd prufus
 make
 ```
+# Development
+If you want code navigation and code completation you can use clangd for your text editor
+```
+./generate_compile_commands.sh
+```
