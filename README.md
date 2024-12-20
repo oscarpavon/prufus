@@ -15,5 +15,6 @@ Create bootable USB with Windows installer
 
 ```
 git clone https://github.com/oscarpavon/prufus
+cd prufus
 make
 ```
