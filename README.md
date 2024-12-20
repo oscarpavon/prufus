@@ -7,7 +7,7 @@ Create bootable USB with Windows installer
 - gcc
 - GTK-4.16.7
 - rsync
-- wimlib-imagex (this program divede the big Windows installation file in parts because the restriction of FAT32 filesystem about 4GB per file)
+- wimlib-imagex (this program divide the big Windows installation file in parts because the restriction of FAT32 filesystem about 4GB per file)
 - dosfstools (very important, it's for create the first partition EFI)
 - ntfs3g (for creating a second partion for user data and set disk label)
 
