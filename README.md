@@ -12,6 +12,8 @@ Create bootable USB with Windows installer
 - ntfs3g
 
 # Build
+
 ```
+git clone https://github.com/oscarpavon/prufus
 make
 ```
