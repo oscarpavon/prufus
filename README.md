@@ -3,11 +3,11 @@
 Create bootable USB with Windows installer
 # Dependencies
 
-GTK-4.16.7
-rsync
-wimlib-imagex
-dosfstools
-ntfs3g
+- GTK-4.16.7
+- rsync
+- wimlib-imagex
+- dosfstools
+- ntfs3g
 
 # Build
 ```
