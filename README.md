@@ -1,6 +1,6 @@
 ## prufus
 ![bootloader](screenshot1.png)
-Create bootable USB with Windows installer
+You can create a bootable USB with Windows installer from GNU/Linux. And then can install Windows in other computer. Useful for computer repair people or if you want to go back to Windows from Linux after a disappointment
 # Dependencies
 - GNU/Linux
 - make
@@ -18,8 +18,18 @@ git clone https://github.com/oscarpavon/prufus
 cd prufus
 make
 ```
+# Warning
+Every command for manipulate disks in GNU/Linux are for privilege user. You don't even can seen your USB without "sudo". And the GUI need "sudo" for format the USB
+
 # Development
 If you want code navigation and code completation you can use clangd for your text editor
 ```
 ./generate_compile_commands.sh
 ```
+
+# How to use
+You can use
+```
+sudo ./prufus
+```
+to execute it. Or create a ".desktop" with "prufus_launcher", it does not work outside the build directoy without "prufus_launcher"
