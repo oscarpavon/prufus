@@ -19,7 +19,9 @@ cd prufus
 make
 ```
 # Warning
-Every command for manipulate disks in GNU/Linux are for privilege user. You don't even can seen your USB without "sudo". And the GUI need "sudo" for format the USB
+Every command for manipulate disks in GNU/Linux are for privilege user. You don't even can seen your USB without "sudo". And the GUI need "sudo" for format the USB.
+This program only work with GPT partitions tables. Only UEFI is supported and only EFI will be supported.
+NONE Windows hack here like remove TPM requirement. And never will be implemented neither.
 
 # Development
 If you want code navigation and code completation you can use clangd for your text editor
