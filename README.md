@@ -21,7 +21,7 @@ cd prufus
 make
 ```
 # Warning
-Every command for manipulate disks in GNU/Linux are for privilege user. You don't even can seen your USB without "sudo". And the GUI need "sudo" for format the USB.
+Every command for manipulate disks in GNU/Linux are for privilege user. You don't even can seen your USB without "sudo". And the GUI need "sudo" for format the USB.  
 This program only work with GPT partitions tables. Only UEFI is supported and only EFI will be supported.
 NONE Windows hack here like remove TPM requirement. And never will be implemented neither.
 
@@ -36,7 +36,7 @@ You can use
 ```
 sudo ./prufus
 ```
-to execute it. Or create a ".desktop" with "prufus_launcher", it does not work outside the build directoy without "prufus_launcher".  
+to execute it. Or create a ".desktop" with "prufus_launcher", it does not work outside the build directory without "prufus_launcher".  
 Or! the GUI call a script named "make_usb.sh", you can pass two arguments in it like:
 
 ```
