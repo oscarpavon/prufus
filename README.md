@@ -44,4 +44,4 @@ sudo make_usb.sh ./Downloads/Windows.iso /dev/sdb
 ```
 
 You can ask in:
-[threads](https://www.threads.net/@oscar0pavon)
+[Threads](https://www.threads.net/@oscar0pavon)
