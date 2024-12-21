@@ -38,7 +38,7 @@ sudo ./prufus
 ```
 to execute it. Or create a ".desktop" with "prufus_launcher", it does not work outside the build directoy without "prufus_launcher".  
 Or! the GUI call a script named "make_usb.sh", you can pass two arguments in it like:
-You can use
+
 ```
 sudo make_usb.sh ./Downloads/Windows.iso /dev/sdb
 ```
