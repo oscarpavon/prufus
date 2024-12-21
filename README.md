@@ -1,6 +1,8 @@
 ## prufus
 ![bootloader](screenshot1.png)
-You can create a bootable USB with Windows installer from GNU/Linux. And then can install Windows in other computer. Useful for computer repair people or if you want to go back to Windows from Linux after a disappointment
+You can create a bootable USB with Windows installer from GNU/Linux. And then can install Windows in other computer. Useful for computer repair people or if you want to go back to Windows from Linux after a disappointment  
+This is a open source project with GPL 3 licence. That mean you cand modified like you want, change the name or incluse sell it as long as you distribute your change to the code.  
+This program it's for unically for GNU/Linux
 # Dependencies
 - GNU/Linux
 - make
