@@ -11,7 +11,7 @@ This program it's for only GNU/Linux
 - rsync
 - wimlib-imagex (this program divide the big Windows installation file in parts because the restriction of FAT32 filesystem about 4GB per file)
 - dosfstools (very important, it's for create the first partition EFI)
-- ntfs3g (for creating a second partion for user data and set disk label)
+- ntfs3g (for creating a second partition for user data and set disk label)
 
 # Build
 
@@ -42,3 +42,6 @@ Or! the GUI call a script named "make_usb.sh", you can pass two arguments in it 
 ```
 sudo make_usb.sh ./Downloads/Windows.iso /dev/sdb
 ```
+
+You can ask in:
+[threads](https://www.threads.net/@oscar0pavon)
