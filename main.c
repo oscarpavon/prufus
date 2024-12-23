@@ -193,6 +193,8 @@ static void
 select_file_result(GObject *source_object, GAsyncResult *res, gpointer user_data)
 {
   GFile* selected_iso_file = gtk_file_dialog_open_finish((GtkFileDialog*)source_object,res,NULL);
+  if(!selected_iso_file)
+	  return;
   char* selected_iso_path = g_file_get_path(selected_iso_file);
   int iso_path_len = strlen(selected_iso_path);
 
