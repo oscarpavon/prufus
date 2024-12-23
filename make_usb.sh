@@ -62,7 +62,7 @@ wimlib-imagex split /tmp/prufus/iso/sources/install.wim /tmp/prufus/usb/sources/
 
 echo "Syncronizing disk..."
 echo 6 > /tmp/prufus/status
-time(sync)
+#time(sync)
 
 echo "Synconization done"
 

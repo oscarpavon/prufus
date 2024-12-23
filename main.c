@@ -209,17 +209,9 @@ select_file_result(GObject *source_object, GAsyncResult *res, gpointer user_data
 
 void choose_iso(GtkWidget *widget, gpointer data)
 {
-  char* user_name = getenv("SUDO_USER");
-  printf("User: %s\n",user_name);
+  char* home = getenv("HOME");
 
-  char home_directory[100];
-  memset(home_directory,0,sizeof(home_directory));
-  strcat(home_directory,"/home/");
-  strcat(home_directory,user_name);
-
-  printf("User home: %s\n",home_directory);
-
-  GFile* user_home = g_file_new_for_path(home_directory);
+  GFile* user_home = g_file_new_for_path(home);
 
   gtk_file_dialog_set_initial_folder((GtkFileDialog*)data,user_home);
   gtk_file_dialog_set_title((GtkFileDialog*)data,"prufus");
