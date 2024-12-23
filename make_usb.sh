@@ -64,13 +64,13 @@ echo "Syncronizing disk..."
 echo 6 > /tmp/prufus/status
 #time(sync)
 
-echo "Synconization done"
+echo "Syncronization done"
 
 
 echo "Cleaning..."
 echo 7 > /tmp/prufus/status
 umount /tmp/prufus/iso
-umount /tmp/prufus/usb
+umount $2"1"
 
 echo "Booteable USB created!"
 echo 8 > /tmp/prufus/status
