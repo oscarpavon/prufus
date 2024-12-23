@@ -12,7 +12,11 @@ This program it's for only GNU/Linux
 - wimlib-imagex (this program divide the big Windows installation file in parts because the restriction of FAT32 filesystem about 4GB per file)
 - dosfstools (very important, it's for create the first partition EFI)
 - ntfs3g (for creating a second partition for user data and set disk label)
-
+## Linux Mint/Ubuntu
+### Build dependency
+```
+sudo apt-get install libgtk-4-dev
+```
 # Build
 
 ```
