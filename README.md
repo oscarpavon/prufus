@@ -18,6 +18,10 @@ This program it's for only GNU/Linux
 sudo apt-get install git
 sudo apt-get install libgtk-4-dev
 ```
+### Runtime dependency
+```
+sudo apt install wimtools
+```
 # Build
 
 ```
