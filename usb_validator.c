@@ -113,16 +113,16 @@ void get_usb_disks(){
           printf("Valid disk: %s\n",disks[i].device); 
         }
       }
-    }else{//not tested but if not has m2 we suppose the main disk it's /dev/sda
+    }else{//if not has m2 we suppose the main disk it's /dev/sda
       for (int i = 0; i < disk_counter; i++) {
-        if (strncmp(disks[i].device, "/dev/sda", 7) != 0) {
-          Disk* valid_disk = &disks[i];
-          memcpy(&valid_disks[valid_disks_counter], valid_disk, sizeof(Disk));
-          valid_disks_counter++;
-          printf("Valid disk: %s\n",disks[i].device); 
+        if (strncmp(disks[i].device, "/dev/sda", 8) == 0) {
+		continue;
         }
+        Disk* valid_disk = &disks[i];
+        memcpy(&valid_disks[valid_disks_counter], valid_disk, sizeof(Disk));
+        valid_disks_counter++;
+        printf("Valid disk: %s\n",disks[i].device); 
       }
-
     }
 
     printf("Valid disks %d\n",valid_disks_counter); 
