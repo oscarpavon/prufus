@@ -15,6 +15,7 @@ This program it's for only GNU/Linux
 ## Linux Mint/Ubuntu
 ### Build dependency
 ```
+sudo apt-get install git
 sudo apt-get install libgtk-4-dev
 ```
 # Build
