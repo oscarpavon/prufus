@@ -24,24 +24,34 @@ bool can_update_working_status = true;
 
 static MakeUSB make_usb_data;
 
+pthread_mutex_t status_label_lock;
+pthread_mutex_t working_label_lock;
+
+void set_working_label(char* working){
+  pthread_mutex_lock(&working_label_lock);
+  gtk_label_set_text(GTK_LABEL(working_label),working);
+  pthread_mutex_unlock(&working_label_lock);
+}
 
 void * update_working_label(){
   while(can_update_working_status == true){
-    gtk_label_set_text(GTK_LABEL(working_label),"..");
+    set_working_label("..");
     usleep(500000) ;
-    gtk_label_set_text(GTK_LABEL(working_label),"...");
+    set_working_label("....");
     usleep(500000) ;
-    gtk_label_set_text(GTK_LABEL(working_label),"....");
+    set_working_label("........");
     usleep(500000) ;
-    gtk_label_set_text(GTK_LABEL(working_label),".....");
+    set_working_label("...........");
     usleep(500000) ;
   }
-  gtk_label_set_text(GTK_LABEL(working_label),"");
+  set_working_label("");
   g_print("Finish working label update\n");
 }
 
 void set_status_text(char* status){
+  pthread_mutex_lock(&status_label_lock);
   gtk_label_set_text(GTK_LABEL(status_label), status);
+  pthread_mutex_unlock(&status_label_lock);
 }
 
 void * update_status(){
@@ -91,6 +101,7 @@ void * update_status(){
       break;
     }
     case SUCCESS: {
+      //gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
       set_status_text("Success!, you can disconnect your USB");
       can_update_status = false;
       can_update_working_status = false;
@@ -104,12 +115,10 @@ void * update_status(){
     can_update_status = false;
     can_update_working_status = false;
 
-    gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
   
     gtk_widget_set_sensitive(create_usb_button, TRUE);
     gtk_widget_set_sensitive(choose_iso_button, TRUE);
     gtk_button_set_label(GTK_BUTTON(create_usb_button), "Create bootable USB");
-
     printf("Finished status update\n");
 }
 
@@ -231,6 +240,9 @@ int main(int arguments_count, char **arguments_value)
 
   get_usb_disks();
 
+  pthread_mutex_init(&status_label_lock,NULL);
+  pthread_mutex_init(&working_label_lock,NULL);
+
   prufus_application = 
     gtk_application_new ("org.gtk.prufus", G_APPLICATION_DEFAULT_FLAGS);
 
@@ -239,6 +251,9 @@ int main(int arguments_count, char **arguments_value)
 
   status = g_application_run(G_APPLICATION (prufus_application), 
       arguments_count, arguments_value);
+
+  pthread_mutex_destroy(&status_label_lock);
+  pthread_mutex_destroy(&working_label_lock);
 
   g_object_unref (prufus_application);
 

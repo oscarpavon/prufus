@@ -1,13 +1,13 @@
 #!/bin/sh
 echo "Creating usb...."
 
-sleep 1
-
 mkdir -p /tmp/prufus
 #if already exist clean first
 rm -rf /tmp/prufus/status
 
 echo 1 > /tmp/prufus/status
+
+sleep 1
 
 echo $1
 echo $2
