@@ -2,14 +2,15 @@
 ### Create bootable USB from .iso images
 This program it's only for GNU/Linux
 <p>
-<p align="left>
-<img src="prufus1.png">
-</p>
+<p>
 <p align="right">
-<a href="https://www.google.com/">
+  <a href="https://www.google.com/">
   <button><img src="download_button.png"/></button>
-</a>
+  </a>
 </p>
+
+</p>
+<img src="prufus1.png">
 </p>
 
 
