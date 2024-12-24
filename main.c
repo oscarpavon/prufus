@@ -120,11 +120,8 @@ void update_status(){
       break;
     }
     }
-
-    usleep(500000);
-    }
-
-    printf("Finished status update\n");
+  }
+  g_print("Finished update status label\n");
 }
 
 static void
@@ -229,10 +226,10 @@ void choose_iso(GtkWidget *widget, gpointer data)
 
   gtk_file_dialog_set_initial_folder((GtkFileDialog*)data,user_home);
   gtk_file_dialog_set_title((GtkFileDialog*)data,"prufus");
-  gtk_file_dialog_open((GtkFileDialog*)data, NULL, NULL, select_file_result ,NULL);
+  gtk_file_dialog_open((GtkFileDialog*)data, NULL, NULL,
+      select_file_result ,NULL);
+
   g_print ("Choose your iso\n");
-
-
 }
 
 
