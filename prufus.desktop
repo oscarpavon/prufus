@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=prufus
+Exec=/usr/bin/prufus_launcher
+Comment=Create bootable USB
+Terminal=false
+PrefersNonDefaultGPU=false
+Icon=/usr/share/icons/prufus/prufus.png
+Type=Application

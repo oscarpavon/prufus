@@ -27,6 +27,9 @@ install:
 	cp prufus_launcher /usr/bin/
 	mkdir -p /usr/share/icons/prufus
 	cp ./icon/icon.png /usr/share/icons/prufus/prufus.png
+	cp ./prufus.desktop /usr/share/applications
+	cp ./prufus.desktop /home/${SUDO_USER}/Desktop/
+	chmod 777 /home/${SUDO_USER}/Desktop/prufus.desktop
 
 uninstall:
 	rm -rf /usr/libexec/prufus
@@ -35,6 +38,8 @@ uninstall:
 	rm -f /usr/bin/prufus.sh
 	rm -f /usr/bin/prufus_launcher
 	rm -rf /usr/share/icons/prufus
+	rm -f /usr/share/applications/prufus.desktop
+	rm -f /home/${SUDO_USER}/Desktop/prufus.desktop
 
 clean:
 	rm -f prufus
