@@ -36,10 +36,6 @@ ntfslabel $2"2" "Data"
 mkfs.fat $2"1"
 mkfs.ntfs -Q $2"2"
 
-
-echo 8 > /tmp/prufus/status
-
-
 echo "Creating temporal directories.."
 echo 2 > /tmp/prufus/status
 mkdir -p /tmp/prufus/iso
