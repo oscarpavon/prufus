@@ -1,6 +1,6 @@
 # prufus
 <a href="https://www.google.com/">
-  <button>Download prufus_installer.zip</button>
+  <button style="background: url(download_button.png)"></button>
 </a>
 
 ![prufus_gui](screenshot1.png)
