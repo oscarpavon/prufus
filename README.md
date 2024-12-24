@@ -1,5 +1,5 @@
 ## prufus
-![bootloader](screenshot1.png)
+![prufus_gui](screenshot1.png)
 You can create a bootable USB with Windows installer from GNU/Linux. And then you can install Windows on another computer. Useful for computer repair people or if you want to go back to Windows from Linux after a disappointment.  
 This is an open source project with GPL 3 license. That means you can modify it like you want, change the name or even sell it as long as you distribute with your changes to the source code.  
 This program it's for only GNU/Linux
@@ -29,28 +29,31 @@ git clone https://github.com/oscarpavon/prufus
 cd prufus
 make
 ```
+
+# Install
+```
+sudo make install
+```
+This will install the program, the program launcher, the icon and create a ".desktop" in your Desktop
+
 # Warning
 Every command for manipulate disks in GNU/Linux are for privilege user. You don't even can seen your USB without "sudo". And the GUI need "sudo" for format the USB.  
 This program only work with GPT partitions tables. Only UEFI is supported and only EFI will be supported.
 NONE Windows hack here like remove TPM requirement. And never will be implemented neither.
 
+# How to use
+![](screenshot2.png)
+You will see an icon in your desktop. Double click on it and enter your password.  
+Select the .iso file and click on "Create bootable USB"
+## Terminal
+Example:
+```
+sudo prufus.sh ./Downloads/Windows.iso /dev/sdb
+```
 # Development
 If you want code navigation and code completation you can use clangd for your text editor
 ```
 ./generate_compile_commands.sh
 ```
-
-# How to use
-You can use
-```
-sudo ./prufus
-```
-to execute it. Or create a ".desktop" with "prufus_launcher", it does not work outside the build directory without "prufus_launcher".  
-Or! the GUI call a script named "make_usb.sh", you can pass two arguments in it like:
-
-```
-sudo make_usb.sh ./Downloads/Windows.iso /dev/sdb
-```
-
 You can ask in:
 [Threads](https://www.threads.net/@oscar0pavon)
