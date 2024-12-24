@@ -1,5 +1,5 @@
 # prufus
-<a href="https://www.google.com/">
+<a align="right" href="https://www.google.com/">
   <button><img src="download_button.png"/></button>
 </a>
 
