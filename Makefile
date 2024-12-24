@@ -16,6 +16,23 @@ main_compile_command.o: main.c
 compile_commands: main_compile_command.o
 	make --always-make --dry-run
 
+install:
+	mkdir -p /usr/libexec/prufus
+	cp prufus_devices.sh /usr/libexec/prufus/
+	cp prufus_dev_names.sh /usr/libexec/prufus/
+	cp prufus_dev_sizes.sh /usr/libexec/prufus/
+	cp prufus /usr/bin/
+	cp prufus.sh /usr/bin/
+	cp prufus_sudo /usr/bin/
+	cp prufus_launcher /usr/bin/
+
+uninstall:
+	rm -rf /usr/libexec/prufus
+	rm -f /usr/bin/prufus_sudo
+	rm -f /usr/bin/prufus
+	rm -f /usr/bin/prufus.sh
+	rm -f /usr/bin/prufus_launcher
+
 clean:
 	rm -f prufus
 	rm -f *.o

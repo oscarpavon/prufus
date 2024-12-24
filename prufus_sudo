@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY HOME=$HOME "$@"
