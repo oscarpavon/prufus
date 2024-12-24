@@ -22,15 +22,13 @@ bool can_update_status = true;
 
 bool can_update_working_status = true;
 
+bool success = false;
+
 static MakeUSB make_usb_data;
 
-pthread_mutex_t status_label_lock;
-pthread_mutex_t working_label_lock;
 
 void set_working_label(char* working){
-  pthread_mutex_lock(&working_label_lock);
   gtk_label_set_text(GTK_LABEL(working_label),working);
-  pthread_mutex_unlock(&working_label_lock);
 }
 
 void * update_working_label(){
@@ -49,16 +47,26 @@ void * update_working_label(){
 }
 
 void set_status_text(char* status){
-  pthread_mutex_lock(&status_label_lock);
   gtk_label_set_text(GTK_LABEL(status_label), status);
-  pthread_mutex_unlock(&status_label_lock);
 }
 
-void * update_status(){
+void update_status_finish(GObject *source_object, GAsyncResult *res, gpointer user_data){
+  if(success == true)
+    gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
+
+  can_update_status = false;
+  can_update_working_status = false;
+
+  gtk_widget_set_sensitive(create_usb_button, TRUE);
+  gtk_widget_set_sensitive(choose_iso_button, TRUE);
+  gtk_button_set_label(GTK_BUTTON(create_usb_button), "Create bootable USB");
+}
+
+void update_status(){
 
   can_update_working_status = true;
   pthread_t working_thread;
-  pthread_create(&working_thread, NULL, update_working_label, NULL);
+  //pthread_create(&working_thread, NULL, update_working_label, NULL);
 
   usleep(500000); // wait for status file
   while (can_update_status == true) {
@@ -101,10 +109,10 @@ void * update_status(){
       break;
     }
     case SUCCESS: {
-      //gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
       set_status_text("Success!, you can disconnect your USB");
       can_update_status = false;
       can_update_working_status = false;
+      success = true;
       break;
     }
     }
@@ -112,13 +120,6 @@ void * update_status(){
     usleep(500000);
     }
 
-    can_update_status = false;
-    can_update_working_status = false;
-
-  
-    gtk_widget_set_sensitive(create_usb_button, TRUE);
-    gtk_widget_set_sensitive(choose_iso_button, TRUE);
-    gtk_button_set_label(GTK_BUTTON(create_usb_button), "Create bootable USB");
     printf("Finished status update\n");
 }
 
@@ -156,10 +157,9 @@ begin_usb_creation(GObject *source_object, GAsyncResult *res, gpointer user_data
       }
     }
     can_update_status = true; 
-    pthread_t thread;
-    pthread_create( &thread,NULL,update_status,NULL);
+    GTask* update_status_task = g_task_new(NULL,NULL,update_status_finish,NULL);
+    g_task_run_in_thread(update_status_task,update_status);
     
-
   } else {
     g_print("Choose other option\n");
   }
@@ -240,9 +240,6 @@ int main(int arguments_count, char **arguments_value)
 
   get_usb_disks();
 
-  pthread_mutex_init(&status_label_lock,NULL);
-  pthread_mutex_init(&working_label_lock,NULL);
-
   prufus_application = 
     gtk_application_new ("org.gtk.prufus", G_APPLICATION_DEFAULT_FLAGS);
 
@@ -251,9 +248,6 @@ int main(int arguments_count, char **arguments_value)
 
   status = g_application_run(G_APPLICATION (prufus_application), 
       arguments_count, arguments_value);
-
-  pthread_mutex_destroy(&status_label_lock);
-  pthread_mutex_destroy(&working_label_lock);
 
   g_object_unref (prufus_application);
 
