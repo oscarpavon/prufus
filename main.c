@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include "gio/gio.h"
 #include "glib.h"
 #include "gtk/gtk.h"
 #include "scripts_names.h"
@@ -31,15 +32,15 @@ void set_working_label(char* working){
   gtk_label_set_text(GTK_LABEL(working_label),working);
 }
 
-void * update_working_label(){
+void update_working_label(){
   while(can_update_working_status == true){
+    set_working_label(".");
+    usleep(500000) ;
     set_working_label("..");
     usleep(500000) ;
     set_working_label("....");
     usleep(500000) ;
-    set_working_label("........");
-    usleep(500000) ;
-    set_working_label("...........");
+    set_working_label("......");
     usleep(500000) ;
   }
   set_working_label("");
@@ -67,9 +68,10 @@ void update_status_finish(GObject *source_object, GAsyncResult *res, gpointer us
 void update_status(){
 
   can_update_working_status = true;
-  pthread_t working_thread;
-  //pthread_create(&working_thread, NULL, update_working_label, NULL);
 
+  GTask* working_task = g_task_new(NULL,NULL,NULL,NULL);
+  g_task_run_in_thread(working_task,update_working_label);
+  
   usleep(500000); // wait for status file
   while (can_update_status == true) {
     int status_file_descriptor = open("/tmp/prufus/status", O_RDONLY);
