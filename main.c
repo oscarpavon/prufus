@@ -51,8 +51,6 @@ void set_status_text(char* status){
 }
 
 void update_status_finish(GObject *source_object, GAsyncResult *res, gpointer user_data){
-  if(success == true)
-    gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
 
   can_update_status = false;
   can_update_working_status = false;
@@ -60,6 +58,10 @@ void update_status_finish(GObject *source_object, GAsyncResult *res, gpointer us
   gtk_widget_set_sensitive(create_usb_button, TRUE);
   gtk_widget_set_sensitive(choose_iso_button, TRUE);
   gtk_button_set_label(GTK_BUTTON(create_usb_button), "Create bootable USB");
+  
+  if(success == true){
+    gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
+  }
 }
 
 void update_status(){
@@ -76,7 +78,7 @@ void update_status(){
       perror("Status:");
     }
     char status;
-    read(status_file_descriptor, &status, 1);
+    read(status_file_descriptor, &status, 1);//we read one byte or character
     close(status_file_descriptor);
 
     switch (status) {
@@ -109,7 +111,7 @@ void update_status(){
       break;
     }
     case SUCCESS: {
-      set_status_text("Success!, you can disconnect your USB");
+      set_status_text("Nothing to do");
       can_update_status = false;
       can_update_working_status = false;
       success = true;
@@ -157,6 +159,7 @@ begin_usb_creation(GObject *source_object, GAsyncResult *res, gpointer user_data
       }
     }
     can_update_status = true; 
+    success = false;
     GTask* update_status_task = g_task_new(NULL,NULL,update_status_finish,NULL);
     g_task_run_in_thread(update_status_task,update_status);
     
