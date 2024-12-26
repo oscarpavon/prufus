@@ -14,6 +14,7 @@ bool success = false;
 
 #define SUCCESS '8'
 #define DEPENDENCIES '2'
+#define ERROR 'e'
 
 void set_working_label(char* working){
   gtk_label_set_text(GTK_LABEL(working_label),working);
@@ -76,6 +77,14 @@ void update_status(){
     }
     case DEPENDENCIES: {
       set_status_text("Installing dependencies");
+      break;
+    }
+    case ERROR: {
+      set_status_text("ERROR");
+      can_update_status = false;
+      can_update_working_status = false;
+      return;
+      
       break;
     }
     }
