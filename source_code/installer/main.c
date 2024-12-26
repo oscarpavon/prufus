@@ -97,7 +97,7 @@ void install_prufus(GtkWidget *widget, gpointer data)
 {
 
     GError *error_open = NULL;
-    char *make_usb_command[] = {"./install.sh", NULL};
+    char *make_usb_command[] = {"./graphics_sudo", "/prufus_install.sh", NULL};
     
     char* current_directory = g_get_current_dir();
 
