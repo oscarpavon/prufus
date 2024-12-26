@@ -1,7 +1,6 @@
 
 #include "user_interface.h"
-#include "gtk/gtk.h"
-#include "gtk/gtkshortcut.h"
+#include "install.h"
 
 GtkWidget *window;
 GtkWidget *status_label;
@@ -86,7 +85,7 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
   gtk_box_append(GTK_BOX(body_box), logo);
   gtk_box_append(GTK_BOX(body_box), installer_description_box);
 
-//  g_signal_connect (cancel_button, "clicked", G_CALLBACK (install_prufus), NULL);
+  g_signal_connect (install_button, "clicked", G_CALLBACK (install_prufus), NULL);
   
   gtk_box_append (GTK_BOX (header_box), title);
   gtk_box_append (GTK_BOX (header_box), description);
@@ -128,7 +127,7 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
 
   //success dialog
   
-  success_alert = gtk_alert_dialog_new("prufus installed successfully");
+  success_alert = gtk_alert_dialog_new("prufus installed successfully, you have an icon in your desktop");
 
 
   gtk_window_present (GTK_WINDOW (window));

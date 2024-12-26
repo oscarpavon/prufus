@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include "glib.h"
 #include "gtk/gtk.h"
 #include "user_interface.h"
 
@@ -11,7 +12,8 @@ bool can_update_working_status = true;
 
 bool success = false;
 
-#define SUCCESS 8
+#define SUCCESS '8'
+#define DEPENDENCIES '2'
 
 void set_working_label(char* working){
   gtk_label_set_text(GTK_LABEL(working_label),working);
@@ -47,7 +49,7 @@ void update_status_finish(GObject *source_object, GAsyncResult *res, gpointer us
 }
 
 void update_status(){
-
+  
   can_update_working_status = true;
 
   GTask* working_task = g_task_new(NULL,NULL,NULL,NULL);
@@ -63,24 +65,30 @@ void update_status(){
     char status;
     read(status_file_descriptor, &status, 1);//we read one byte or character
     close(status_file_descriptor);
-
+    
     switch (status) {
     case SUCCESS: {
       can_update_status = false;
       can_update_working_status = false;
       success = true;
+      set_status_text("prufus installed");
+      break;
+    }
+    case DEPENDENCIES: {
+      set_status_text("Installing dependencies");
       break;
     }
     }
   }
+  g_print("Finish status update\n");
 }
 
-static void
-begin_intallation(GObject *source_object, GAsyncResult *res, gpointer user_data)
+
+void install_prufus(GtkWidget *widget, gpointer data)
 {
 
     GError *error_open = NULL;
-    char *make_usb_command[] = {"./install", NULL};
+    char *make_usb_command[] = {"./install.sh", NULL};
     
     char* current_directory = g_get_current_dir();
 
@@ -99,12 +107,6 @@ begin_intallation(GObject *source_object, GAsyncResult *res, gpointer user_data)
     success = false;
     GTask* update_status_task = g_task_new(NULL,NULL,update_status_finish,NULL);
     g_task_run_in_thread(update_status_task,update_status);
-
-}
-
-
-void install_prufus(GtkWidget *widget, gpointer data)
-{
 
 
 }
