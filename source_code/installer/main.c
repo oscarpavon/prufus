@@ -12,8 +12,9 @@ bool can_update_working_status = true;
 
 bool success = false;
 
-#define SUCCESS '8'
+#define ENTER_PASSWORD '1'
 #define DEPENDENCIES '2'
+#define SUCCESS '8'
 #define ERROR 'e'
 
 void set_working_label(char* working){
@@ -68,6 +69,10 @@ void update_status(){
     close(status_file_descriptor);
     
     switch (status) {
+    case ENTER_PASSWORD: {
+      set_status_text("Enter your password");
+      break;
+    }
     case SUCCESS: {
       can_update_status = false;
       can_update_working_status = false;
@@ -93,17 +98,14 @@ void update_status(){
 }
 
 
-void install_prufus(GtkWidget *widget, gpointer data)
-{
+void spawn_script(char** script){
 
     GError *error_open = NULL;
-    char *make_usb_command[] = {"./graphics_sudo", "/prufus_install.sh", NULL};
-    
     char* current_directory = g_get_current_dir();
 
     char *environment[] = {NULL};
     gboolean result = g_spawn_async(
-        current_directory, make_usb_command, environment, 
+        current_directory, script, environment, 
         G_SPAWN_SEARCH_PATH | G_SPAWN_CHILD_INHERITS_STDIN,
         NULL, NULL, NULL, &error_open);
     if (!result) {
@@ -112,12 +114,26 @@ void install_prufus(GtkWidget *widget, gpointer data)
         g_error_free(error_open);
       }
     }
-    can_update_status = true; 
-    success = false;
-    GTask* update_status_task = g_task_new(NULL,NULL,update_status_finish,NULL);
-    g_task_run_in_thread(update_status_task,update_status);
+}
 
+void install_prufus(GtkWidget *widget, gpointer data)
+{
 
+  char *prepare_script[] = {"./prepare.sh", NULL};
+
+  spawn_script(prepare_script);
+
+  usleep(500000); //wait for prepare status
+
+  char *install_script[] = {"./graphics_sudo", "/prufus_install.sh", NULL};
+
+  spawn_script(install_script);
+
+  can_update_status = true;
+  success = false;
+  GTask *update_status_task =
+      g_task_new(NULL, NULL, update_status_finish, NULL);
+  g_task_run_in_thread(update_status_task, update_status);
 }
 
 int main(int arguments_count, char **arguments_value)
