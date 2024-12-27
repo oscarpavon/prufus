@@ -125,13 +125,13 @@ void spawn_script(char** script){
 void install_prufus(GtkWidget *widget, gpointer data)
 {
 
-  char *prepare_script[] = {"./prepare.sh", NULL};
+  char *prepare_script[] = {"./installer/prepare.sh", NULL};
 
   spawn_script(prepare_script);
 
   usleep(500000); //wait for prepare status
 
-  char *install_script[] = {"./graphics_sudo", "/prufus_install.sh", NULL};
+  char *install_script[] = {"./installer/graphics_sudo", "/install.sh", NULL};
 
   spawn_script(install_script);
 
