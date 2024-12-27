@@ -14,9 +14,9 @@ distributable: distributable_directory prufus installer
 	cp -vr scripts ./distributable/prufus/
 	cp -v icon/icon.png ./distributable/prufus
 	cp -v prufus.desktop ./distributable/prufus
-	cp ./source_code/installer/prufus_installer ./distributable/setup
+	cp ./source_code/installer/setup ./distributable/
 	cp ./source_code/installer/graphics_sudo ./distributable/installer/
-	cp ./source_code/installer/prufus_install.sh ./distributable/installer/
+	cp ./source_code/installer/install.sh ./distributable/installer/
 	cp ./source_code/installer/prepare.sh ./distributable/installer/
 	cp ./logo.png ./distributable/installer
 
