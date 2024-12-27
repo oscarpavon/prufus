@@ -1,11 +1,5 @@
 #!/bin/sh
 
-mkdir -vp /tmp/prufus
-#if already exist clean first
-rm -f /tmp/prufus/status
-
-echo 1 > /tmp/prufus/status
-
 echo "Installing.."
 echo 2 > /tmp/prufus/status
 apt update
