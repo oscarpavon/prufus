@@ -3,142 +3,99 @@
 
 #include "scripts_names.h"
 
-char buffer_disks_info[60*10];
+#define ARENA_MAX_SIZE 1024
+#define READ_SIZE 64
 
-char buffer_disk_name[128];
+typedef struct {
+    size_t offset;
+    char buffer[ARENA_MAX_SIZE];
+} arena_t;
 
-Disk valid_disks[10];
+static char *arena_tail(arena_t *arena);
+static void arena_save(arena_t *arena, size_t size);
 
-Disk disks[10];
+static void next_token(char **disk_info);
+static void terminate_token(char **disk_info);
+static void parse_disk(char **disk_info, size_t disk);
 
-void get_string(int type){
-    char buffer[256];
-    memset(buffer,0,sizeof(buffer));
-    int counter = 0;
-    int local_disk_counter = 0;
+// global storage for disks
+Disk disks[MAX_DISKS];
 
+size_t get_usb_disks(void) {
+    static arena_t arena = {0}; // device info stored here
+    FILE *script = popen(get_usb_disks_script, "r");
+    size_t disk_count = 0;
     
-    int offset = 0;
-    for(int i = 0 ; ;i++){
-      if(buffer_disk_name[i] == '\0')
-        break;
-      if(buffer_disk_name[i] != '\n'){
-        buffer[counter] = buffer_disk_name[i];
-        counter++; 
-      }else {
-        if(type == NAME){
-          memcpy(disks[local_disk_counter].name, buffer, counter);
-          offset += counter;
-        }else if(type == DEVICE){
-          memcpy(disks[local_disk_counter].device, buffer, counter);
-        }else if(type == SIZE){
-          memcpy(disks[local_disk_counter].size, buffer, counter);
-        }
-        local_disk_counter++;
-        if(type == DEVICE_COUNT){
-          disk_counter++;
-        }
-        counter = 0;
-      }
+    // read all
+    while (!feof(script)) {
+	char *chunk = arena_tail(&arena);
+	size_t bytes = fread(chunk, 1, READ_SIZE, script);
+	
+	arena_save(&arena, bytes); 
+	*arena_tail(&arena) = 0;
+	
+	if (strpbrk(chunk, "\n")) { 
+	    ++disk_count;
+	}
     }
-  
+    *arena_tail(&arena) = 0;
+
+    pclose(script);
+    printf("Disk count: %zu\n", disk_count);
+
+    char *disk_info = arena.buffer;
+    for (size_t disk = 0; disk < disk_count; ++disk)
+    {
+	parse_disk(&disk_info, disk);
+    }
+
+    for (size_t i = 0; i < disk_count; ++i)
+    {	
+	printf("%s %s %s\n", disks[i].device, disks[i].name, disks[i].size);
+    }
+
+    return disk_count;
 }
 
-void get_string_from_file(FILE *script_file) {
-  memset(buffer_disk_name, 0, sizeof(buffer_disk_name));
-  char buffer[128];
-  memset(buffer,0,sizeof(buffer));
-  int offset = 0;
-  while (fgets(buffer, sizeof(buffer), script_file) !=
-         NULL) {
-
-    int len = strlen(buffer);
-    memcpy(&buffer_disk_name[offset], buffer, len);
-    offset += len;
-  }
-  
+static void parse_disk(char **disk_info, size_t disk)
+{
+    next_token(disk_info); // parse device
+    disks[disk].device = *disk_info;
+    terminate_token(disk_info);
+    
+    next_token(disk_info); // parse disk label
+    disks[disk].name = *disk_info;
+    terminate_token(disk_info);
+    
+    next_token(disk_info); // parse size	
+    disks[disk].size = *disk_info;
+    terminate_token(disk_info);
 }
 
-void get_usb_disks(){
-    FILE *script_file;
-    script_file = popen(get_devices_names_script, "r");
+static size_t arena_mark(arena_t *arena) {
+    return arena->offset;
+}
 
-    get_string_from_file(script_file); 
-    get_string(NAME);
+static void arena_reset(arena_t *arena, size_t mark) {
+    arena->offset = mark;
+}
 
-    pclose(script_file);
-  
+static void arena_save(arena_t *arena, size_t size) {
+    arena->offset += size;
+}
 
-    script_file = popen(get_devices_script, "r");
+static char *arena_tail(arena_t *arena) {
+    return &arena->buffer[arena->offset];
+}
 
-    get_string_from_file(script_file); 
-    get_string(DEVICE);
-    pclose(script_file);
+static void next_token(char **disk_info)
+{
+    *disk_info = strpbrk(*disk_info, "\"") + 1;
+}
 
-    script_file = popen(get_devices_size_script, "r");
-
-    get_string_from_file(script_file); 
-    get_string(SIZE);
-
-    get_string(DEVICE_COUNT);
-
-    pclose(script_file);
-     
-
-    for(int i = 0; i< disk_counter; i++){
-      printf("%s %s %s\n",disks[i].name, disks[i].size, disks[i].device);
-    }
-    
-    //filters disks
-    int valid_disks_counter = 0;
-    bool has_m2 = false;
-
-    for(int i = 0; i< disk_counter; i++){
-      if(strncmp(disks[i].device, "/dev/nv",7) == 0){
-        has_m2 = true;
-      }
-    }
-    
-    memset(&valid_disks,0,sizeof(valid_disks));
-
-
-    //if has m2 disk we suppose we have USBs in /dev/sd* unless some other SATA disk
-    if (has_m2) {
-
-      for (int i = 0; i < disk_counter; i++) {
-        if (strncmp(disks[i].device, "/dev/sd", 7) == 0) {
-          Disk* valid_disk = &disks[i];
-          memcpy(&valid_disks[valid_disks_counter], valid_disk, sizeof(Disk));
-          valid_disks_counter++;
-          printf("Valid disk: %s\n",disks[i].device); 
-        }
-      }
-    }else{//if not has m2 we suppose the main disk it's /dev/sda
-      for (int i = 0; i < disk_counter; i++) {
-        if (strncmp(disks[i].device, "/dev/sda", 8) == 0) {
-		continue;
-        }
-        Disk* valid_disk = &disks[i];
-        memcpy(&valid_disks[valid_disks_counter], valid_disk, sizeof(Disk));
-        valid_disks_counter++;
-        printf("Valid disk: %s\n",disks[i].device); 
-      }
-    }
-
-    printf("Valid disks %d\n",valid_disks_counter); 
-
-    for(int i = 0; i< valid_disks_counter; i++){
-      printf("%s %s %s\n",valid_disks[i].name, 
-          valid_disks[i].size, valid_disks[i].device);
-    }
-
-    disk_counter = valid_disks_counter;
-
-    int offset = 0;
-    for(int i = 0; i < disk_counter; i++){
-      sprintf(buffer_disks_info+offset, "%s %s", valid_disks[i].name,valid_disks[i].size);
-      offset += DISKS_INFO_OFFSET;
-    }
-
-
+static void terminate_token(char **disk_info)
+{
+    *disk_info = strpbrk(*disk_info, "\"");
+    **disk_info = 0; // null terminate
+    ++(*disk_info);
 }
