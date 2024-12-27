@@ -17,6 +17,12 @@ bool success = false;
 #define SUCCESS '8'
 #define ERROR 'e'
 
+void end_installation(GObject *source_object,
+    GAsyncResult *result, gpointer user_data)
+{
+  gtk_window_close(GTK_WINDOW(window));
+}
+
 void set_working_label(char* working){
   gtk_label_set_text(GTK_LABEL(working_label),working);
 }
@@ -47,6 +53,7 @@ void update_status_finish(GObject *source_object, GAsyncResult *res, gpointer us
   
   if(success == true){
     gtk_alert_dialog_show(success_alert,GTK_WINDOW(window));
+    gtk_alert_dialog_choose(success_alert,GTK_WINDOW(window),NULL,end_installation,NULL);
   }
 }
 
