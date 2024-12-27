@@ -19,7 +19,9 @@ distributable: distributable_directory prufus installer
 	cp ./source_code/installer/install.sh ./distributable/installer/
 	cp ./source_code/installer/prepare.sh ./distributable/installer/
 	cp ./logo.png ./distributable/installer
-
+	cd distributable
+	zip -r prufus_installer.zip ./distributable/installer/ ./distributable/prufus/ ./distributable
+	mv prufus_installer.zip ./distributable
 
 
 install:
@@ -49,4 +51,5 @@ uninstall:
 
 clean:
 	make -C source_code clean
+	make -C source_code/installer clean
 	rm -f prufus
