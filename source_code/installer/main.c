@@ -22,7 +22,6 @@ void end_installation(GObject *source_object,
 {
   gtk_window_close(GTK_WINDOW(window));
 }
-
 void set_working_label(char* working){
   gtk_label_set_text(GTK_LABEL(working_label),working);
 }
