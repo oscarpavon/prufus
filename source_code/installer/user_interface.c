@@ -38,7 +38,7 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
   gtk_widget_set_halign(body_box,GTK_ALIGN_FILL);
   gtk_widget_set_valign(body_box,GTK_ALIGN_FILL);
 
-  GtkWidget* logo = gtk_image_new_from_file("../../logo.png");
+  GtkWidget* logo = gtk_image_new_from_file("./installer/logo.png");
   gtk_widget_set_halign(logo,GTK_ALIGN_FILL);
   gtk_widget_set_valign(logo,GTK_ALIGN_FILL);
   gtk_widget_set_vexpand(logo,TRUE);
