@@ -5,9 +5,7 @@ prufus:
 install:
 	cp prufus /usr/bin/
 	mkdir -p /usr/libexec/prufus
-	cp ./scripts/prufus_devices.sh /usr/libexec/prufus/
-	cp ./scripts/prufus_dev_names.sh /usr/libexec/prufus/
-	cp ./scripts/prufus_dev_sizes.sh /usr/libexec/prufus/
+	cp ./scripts/get_usb_disks.sh /usr/bin/
 	cp ./scripts/prufus.sh /usr/bin/
 	cp ./scripts/prufus_sudo /usr/bin/
 	cp ./scripts/prufus_launcher /usr/bin/
@@ -20,6 +18,7 @@ install:
 uninstall:
 	rm -rf /usr/libexec/prufus
 	rm -f /usr/bin/prufus_sudo
+	rm -f /usr/bin/get_usb_disks.sh
 	rm -f /usr/bin/prufus
 	rm -f /usr/bin/prufus.sh
 	rm -f /usr/bin/prufus_launcher
