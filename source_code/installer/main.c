@@ -6,6 +6,8 @@
 #include "gtk/gtk.h"
 #include "user_interface.h"
 
+char ** installer_enviroment;
+
 bool can_update_status = true;
 
 bool can_update_working_status = true;
@@ -14,6 +16,7 @@ bool success = false;
 
 #define ENTER_PASSWORD '1'
 #define DEPENDENCIES '2'
+#define PRUFUS '3'
 #define SUCCESS '8'
 #define ERROR 'e'
 
@@ -90,6 +93,10 @@ void update_status(){
       set_status_text("Installing dependencies");
       break;
     }
+    case PRUFUS: {
+      set_status_text("Installing prufus");
+      break;
+    }
     case ERROR: {
       set_status_text("ERROR");
       can_update_status = false;
@@ -108,10 +115,9 @@ void spawn_script(char** script){
 
     GError *error_open = NULL;
     char* current_directory = g_get_current_dir();
-
-    char *environment[] = {NULL};
+    
     gboolean result = g_spawn_async(
-        current_directory, script, environment, 
+        current_directory, script, installer_enviroment, 
         G_SPAWN_SEARCH_PATH | G_SPAWN_CHILD_INHERITS_STDIN,
         NULL, NULL, NULL, &error_open);
     if (!result) {
@@ -142,8 +148,10 @@ void install_prufus(GtkWidget *widget, gpointer data)
   g_task_run_in_thread(update_status_task, update_status);
 }
 
-int main(int arguments_count, char **arguments_value)
+int main(int arguments_count, char **arguments_value, char** environment)
 {
+  installer_enviroment = environment;
+
   GtkApplication *prufus_application;
 
   int status;
