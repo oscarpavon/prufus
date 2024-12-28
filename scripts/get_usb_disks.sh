@@ -1,2 +1,2 @@
 #!/bin/bash
-lsblk -n -P -d -p -o NAME,SIZE,LABEL
+lsblk -n -P -d -p -o NAME,LABEL,SIZE
