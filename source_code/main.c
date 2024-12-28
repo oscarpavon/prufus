@@ -13,11 +13,10 @@
 #include "prufus.h"
 #include "scripts_names.h"
 
-char* devices_info[10];
 
 pid_t make_usb_pid;
 
-int disk_counter = 0;
+size_t disk_counter = 0;
 
 bool can_update_status = true;
 
@@ -141,7 +140,7 @@ begin_usb_creation(GObject *source_object, GAsyncResult *res, gpointer user_data
 
     GError *error_open = NULL;
     char *make_usb_command[] = {make_usb_script, make_usb_data.iso_path,
-                       valid_disks[select_device_index].device, NULL};
+				disks[select_device_index].device, NULL};
     
     char* current_directory = g_get_current_dir();
 
@@ -188,8 +187,8 @@ void make_usb(GtkWidget *widget, gpointer data)
 
   write_usb_warning = gtk_alert_dialog_new(
       "WARNING! All data will be lost\n ISO Image: %s\n USB: %s %s",
-      make_usb_data.iso_path,valid_disks[select_device_index].name, 
-      valid_disks[select_device_index].size);
+      make_usb_data.iso_path,disks[select_device_index].name, 
+      disks[select_device_index].size);
 
   const char * const dialog_buttons[] = {"I'm sure", "Cancel",NULL};
 
@@ -240,7 +239,7 @@ int main(int arguments_count, char **arguments_value)
 
   int status;
 
-  get_usb_disks();
+  disk_counter = get_usb_disks();
 
   prufus_application = 
     gtk_application_new ("org.gtk.prufus", G_APPLICATION_DEFAULT_FLAGS);

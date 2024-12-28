@@ -48,7 +48,7 @@ mount $2"1" /tmp/prufus/usb #we use the number 1 partition EFI
 
 rm -r /tmp/prufus/usb/* #temporal format
 
-echo "Copying regular installtion files.."
+echo "Copying regular installation files.."
 echo 4 > /tmp/prufus/status
 rsync -v -r -I --no-links --no-perms --no-owner --no-group --exclude sources/install.wim /tmp/prufus/iso/ /tmp/prufus/usb
 
