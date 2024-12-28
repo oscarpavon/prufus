@@ -93,7 +93,11 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
   GtkStringList *list = gtk_string_list_new(NULL);
   for (size_t i = 0; i < disk_counter; ++i) {
     char text[128] = {0};
-    snprintf(text, 128, "%s %s %s", disks[i].device, disks[i].name, disks[i].size);
+    snprintf(text, 128, "%-16s %s %16s", 
+	disks[i].device, 
+	disks[i].name[0] ? disks[i].name : "NO_LABEL", 
+	disks[i].size);
+
     gtk_string_list_append(list, text);
   }
   devices_drop_down = gtk_drop_down_new(G_LIST_MODEL(list), NULL);
