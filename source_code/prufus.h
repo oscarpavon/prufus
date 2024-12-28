@@ -3,46 +3,41 @@
 
 #include <gtk/gtk.h>
 
-#define NAME    1
-#define DEVICE  2
-#define SIZE    3
-#define DEVICE_COUNT    4
+#define MAX_DISKS 10
+#define MAX_PATH_LEN 128
 
-#define DISKS_INFO_OFFSET 60
-
-#define FORMAT '1'
-#define TEMP '2'
-#define MOUNT '3'
-#define COPY '4'
-#define COPY_BIG '5'
-#define SYNC '6'
-#define CLEAN '7'
-#define SUCCESS '8'
+typedef enum
+{
+    FORMAT = '1',
+    TEMP,
+    MOUNT,
+    COPY,
+    COPY_BIG,
+    SYNC,
+    CLEAN,
+    SUCCESS,
+}
+stage_t;
 
 void cancel(GtkWidget *widget, gpointer data);
-void make_usb (GtkWidget *widget, gpointer data);
+void make_usb(GtkWidget *widget, gpointer data);
 void choose_iso(GtkWidget *widget, gpointer data);
 
 typedef struct MakeUSB{
   char* device;
-  char iso_path[100];
-} MakeUSB ;
+  char iso_path[MAX_PATH_LEN];
+} MakeUSB;
 
-typedef struct Disk{
-  char name[40];
-  char device[20];
-  char size[20];
+typedef struct Disk {
+    char *device;
+    char *name;
+    char *size;
 } Disk;
 
-extern Disk disks[];
-extern Disk valid_disks[];
 
-extern char buffer_disks_info[];
+extern size_t disk_counter;
 
-extern char* devices_info[];
-
-extern int disk_counter;
-
-void get_usb_disks();
+extern Disk disks[MAX_DISKS];
+size_t get_usb_disks(void);
 
 #endif

@@ -89,18 +89,18 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
   gtk_label_set_attributes((GtkLabel*)title,Attrs);
 
   description = gtk_label_new("Create bootable USB from .iso images");
+  
+  GtkStringList *list = gtk_string_list_new(NULL);
+  for (size_t i = 0; i < disk_counter; ++i) {
+    char text[128] = {0};
+    snprintf(text, 128, "%-16s %s %16s", 
+	disks[i].device, 
+	disks[i].name[0] ? disks[i].name : "NO_LABEL", 
+	disks[i].size);
 
-
-  //create drop down with devices names and sizes
-  int offset = 0;
-  for (int i = 0; i < disk_counter; i++) {
-    devices_info[i] = buffer_disks_info + offset;
-    offset += DISKS_INFO_OFFSET;//it's a constant offset defined
+    gtk_string_list_append(list, text);
   }
-
-  devices_drop_down = gtk_drop_down_new_from_strings((const char* const*)devices_info);
-
-
+  devices_drop_down = gtk_drop_down_new(G_LIST_MODEL(list), NULL);
 
   g_signal_connect (cancel_button, "clicked", G_CALLBACK (cancel), NULL);
   g_signal_connect (create_usb_button, "clicked", G_CALLBACK (make_usb), NULL);
@@ -161,14 +161,10 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
   gtk_box_append (GTK_BOX (status_box), cancel_box);
 
   gtk_box_append (GTK_BOX (cancel_box), cancel_button);
-
-  gtk_box_append (GTK_BOX (cancel_box), cancel_button);
   
-
   gtk_box_append (GTK_BOX (status_box), status_label_box);
 
   gtk_box_append (GTK_BOX (box), status_box);
-
 
   
   gtk_window_set_child (GTK_WINDOW (window), box);
