@@ -2,6 +2,8 @@
 #include "user_interface.h"
 #include "prufus.h"
 
+#define MAX_ITEM_TEXT_SIZE 256
+
 GtkWidget* selected_iso_label;
 GtkWidget* disk_label;
 GtkWidget* devices_drop_down;
@@ -92,10 +94,9 @@ void create_user_interface(GtkApplication *app, gpointer user_data)
   
   GtkStringList *list = gtk_string_list_new(NULL);
   for (size_t i = 0; i < disk_counter; ++i) {
-    char text[128] = {0};
-    snprintf(text, 128, "%-16s %s %16s", 
-	disks[i].device, 
-	disks[i].name[0] ? disks[i].name : "NO_LABEL", 
+    char text[MAX_ITEM_TEXT_SIZE] = {0};
+    snprintf(text, MAX_ITEM_TEXT_SIZE, "%-16s %s",
+	disks[i].model,
 	disks[i].size);
 
     gtk_string_list_append(list, text);

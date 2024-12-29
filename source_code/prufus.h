@@ -29,10 +29,9 @@ typedef struct MakeUSB{
 } MakeUSB;
 
 typedef struct Disk {
-    char *device;
-    char *model;
-    char *size;
-    char *label;
+  char *device;
+  char *model;
+  char *size;
 } Disk;
 
 

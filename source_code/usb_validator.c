@@ -49,7 +49,7 @@ size_t get_usb_disks(void) {
     }
 
     for (size_t i = 0; i < disk_count; ++i) {
-        printf("%s %s %s\n", disks[i].device, disks[i].name, disks[i].size);
+        printf("%s %s %s\n", disks[i].device, disks[i].model, disks[i].size);
     }
 
     return disk_count;
@@ -66,10 +66,6 @@ static void parse_disk(char **disk_info, size_t disk) {
 
     next_token(disk_info); // parse size
     disks[disk].size = *disk_info;
-    terminate_token(disk_info);
-    
-    next_token(disk_info); // parse disk label
-    disks[disk].label = *disk_info;
     terminate_token(disk_info);
 }
 
