@@ -30,8 +30,9 @@ typedef struct MakeUSB{
 
 typedef struct Disk {
     char *device;
-    char *name;
+    char *model;
     char *size;
+    char *label;
 } Disk;
 
 
