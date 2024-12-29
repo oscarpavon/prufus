@@ -25,18 +25,18 @@ size_t get_usb_disks(void) {
     static arena_t arena = {0}; // device info stored here
     FILE *script = popen(get_usb_disks_script, "r");
     size_t disk_count = 0;
-    
+
     // read all
     while (!feof(script)) {
-	char *chunk = arena_tail(&arena);
-	size_t bytes = fread(chunk, 1, READ_SIZE, script);
-	
-	arena_save(&arena, bytes); 
-	*arena_tail(&arena) = 0;
-	
-	if (strpbrk(chunk, "\n")) { 
-	    ++disk_count;
-	}
+        char *chunk = arena_tail(&arena);
+        size_t bytes = fread(chunk, 1, READ_SIZE, script);
+
+        arena_save(&arena, bytes);
+        *arena_tail(&arena) = 0;
+
+        if (strpbrk(chunk, "\n")) {
+            ++disk_count;
+        }
     }
     *arena_tail(&arena) = 0;
 
@@ -44,31 +44,32 @@ size_t get_usb_disks(void) {
     printf("Disk count: %zu\n", disk_count);
 
     char *disk_info = arena.buffer;
-    for (size_t disk = 0; disk < disk_count; ++disk)
-    {
-	parse_disk(&disk_info, disk);
+    for (size_t disk = 0; disk < disk_count; ++disk) {
+        parse_disk(&disk_info, disk);
     }
 
-    for (size_t i = 0; i < disk_count; ++i)
-    {	
-	printf("%s %s %s\n", disks[i].device, disks[i].name, disks[i].size);
+    for (size_t i = 0; i < disk_count; ++i) {
+        printf("%s %s %s\n", disks[i].device, disks[i].name, disks[i].size);
     }
 
     return disk_count;
 }
 
-static void parse_disk(char **disk_info, size_t disk)
-{
-    next_token(disk_info); // parse device
+static void parse_disk(char **disk_info, size_t disk) {
+    // parse device
     disks[disk].device = *disk_info;
+    terminate_token(disk_info);
+
+    next_token(disk_info); // parse model
+    disks[disk].model = *disk_info;
+    terminate_token(disk_info);
+
+    next_token(disk_info); // parse size
+    disks[disk].size = *disk_info;
     terminate_token(disk_info);
     
     next_token(disk_info); // parse disk label
-    disks[disk].name = *disk_info;
-    terminate_token(disk_info);
-    
-    next_token(disk_info); // parse size	
-    disks[disk].size = *disk_info;
+    disks[disk].label = *disk_info;
     terminate_token(disk_info);
 }
 
@@ -88,14 +89,12 @@ static char *arena_tail(arena_t *arena) {
     return &arena->buffer[arena->offset];
 }
 
-static void next_token(char **disk_info)
-{
-    *disk_info = strpbrk(*disk_info, "\"") + 1;
+static void next_token(char **disk_info) {
+    *disk_info = strpbrk(*disk_info, ",") + 1;
 }
 
-static void terminate_token(char **disk_info)
-{
-    *disk_info = strpbrk(*disk_info, "\"");
+static void terminate_token(char **disk_info) {
+    *disk_info = strpbrk(*disk_info, ",\n");
     **disk_info = 0; // null terminate
     ++(*disk_info);
 }
