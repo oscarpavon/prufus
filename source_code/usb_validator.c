@@ -31,7 +31,7 @@ size_t get_usb_disks(void) {
         char *chunk = arena_tail(&arena);
         size_t bytes = fread(chunk, 1, READ_SIZE, script);
 
-        arena_save(&arena, bytes); 
+        arena_save(&arena, bytes);
         *arena_tail(&arena) = 0;
 
         if (strpbrk(chunk, "\n")) {
@@ -56,16 +56,20 @@ size_t get_usb_disks(void) {
 }
 
 static void parse_disk(char **disk_info, size_t disk) {
-    next_token(disk_info); // parse device
+    // parse device
     disks[disk].device = *disk_info;
     terminate_token(disk_info);
 
-    next_token(disk_info); // parse disk label
-    disks[disk].name = *disk_info;
+    next_token(disk_info); // parse model
+    disks[disk].model = *disk_info;
     terminate_token(disk_info);
 
     next_token(disk_info); // parse size
     disks[disk].size = *disk_info;
+    terminate_token(disk_info);
+    
+    next_token(disk_info); // parse disk label
+    disks[disk].label = *disk_info;
     terminate_token(disk_info);
 }
 
@@ -86,11 +90,11 @@ static char *arena_tail(arena_t *arena) {
 }
 
 static void next_token(char **disk_info) {
-    *disk_info = strpbrk(*disk_info, "\"") + 1;
+    *disk_info = strpbrk(*disk_info, ",") + 1;
 }
 
 static void terminate_token(char **disk_info) {
-    *disk_info = strpbrk(*disk_info, "\"");
+    *disk_info = strpbrk(*disk_info, ",\n");
     **disk_info = 0; // null terminate
     ++(*disk_info);
 }
