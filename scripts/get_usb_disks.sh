@@ -1,2 +1,10 @@
 #!/bin/bash
-lsblk -P -d -n -o HOTPLUG,PATH,MODEL,SIZE | sed '/HOTPLUG="0"/d; s/\w*=//g; s/" /,/g; s/"//g; s/1,/,/g; s/^,\(.*\)/\1/' #add a comma and the last sed remove the first comma
+ 
+SED_FORMAT=\
+ '/HOTPLUG="0"/d;' # filter USB drives
+ 's/\w*=//g;'	   # remove keys
+ 's/" /\t/g; '     # replace last \" of the values with TAB separator 
+ 's/"//g;'	   # remove first \" of the values
+ 's/[01]\t//g;'    # remove first HOTPLUG field
+
+lsblk -P -d -n -o HOTPLUG,PATH,MODEL,SIZE | sed ${SED_FORMAT}
