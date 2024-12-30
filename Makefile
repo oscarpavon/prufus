@@ -1,4 +1,6 @@
 
+.PHONY: prufus
+
 prufus:
 	make -C source_code
 
