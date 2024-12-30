@@ -29,9 +29,7 @@ DIR="`dirname "$FILE_PATH"`"
 
 cp -v $DIR/../prufus/prufus /usr/bin/
 mkdir -p /usr/libexec/prufus
-cp -v $DIR/../prufus/scripts/prufus_devices.sh /usr/libexec/prufus/
-cp -v $DIR/../prufus/scripts/prufus_dev_names.sh /usr/libexec/prufus/
-cp -v $DIR/../prufus/scripts/prufus_dev_sizes.sh /usr/libexec/prufus/
+cp -v $DIR/../prufus/scripts/get_usb_disks.sh /usr/libexec/prufus/
 cp -v $DIR/../prufus/scripts/prufus.sh /usr/bin/
 cp -v $DIR/../prufus/scripts/prufus_sudo /usr/bin/
 cp -v $DIR/../prufus/scripts/prufus_launcher /usr/bin/
@@ -40,9 +38,6 @@ cp -v $DIR/../prufus/icon.png /usr/share/icons/prufus/prufus.png
 cp -v $DIR/../prufus/prufus.desktop /usr/share/applications
 cp $DIR/../prufus/prufus.desktop $HOME/Desktop/
 chmod 777 $HOME/Desktop/prufus.desktop
-
-#cp ./prufus.desktop /home/${SUDO_USER}/Desktop/
-#chmod 777 /home/${SUDO_USER}/Desktop/prufus.desktop
 
 
 echo "Installed"
