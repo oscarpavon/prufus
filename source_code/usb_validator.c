@@ -60,11 +60,11 @@ static void parse_disk(char **disk_info, size_t disk) {
     disks[disk].device = *disk_info;
     terminate_token(disk_info);
 
-    next_token(disk_info); // parse model
+    // parse model
     disks[disk].model = *disk_info;
     terminate_token(disk_info);
 
-    next_token(disk_info); // parse size
+    // parse size
     disks[disk].size = *disk_info;
     terminate_token(disk_info);
 }
@@ -83,10 +83,6 @@ static void arena_save(arena_t *arena, size_t size) {
 
 static char *arena_tail(arena_t *arena) {
     return &arena->buffer[arena->offset];
-}
-
-static void next_token(char **disk_info) {
-    *disk_info = strpbrk(*disk_info, ",") + 1;
 }
 
 static void terminate_token(char **disk_info) {
