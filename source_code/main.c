@@ -187,7 +187,7 @@ void make_usb(GtkWidget *widget, gpointer data)
 
   write_usb_warning = gtk_alert_dialog_new(
       "WARNING! All data will be lost\n ISO Image: %s\n USB: %s %s",
-      make_usb_data.iso_path,disks[select_device_index].name, 
+      make_usb_data.iso_path,disks[select_device_index].model, 
       disks[select_device_index].size);
 
   const char * const dialog_buttons[] = {"I'm sure", "Cancel",NULL};
