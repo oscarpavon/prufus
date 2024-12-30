@@ -7,10 +7,10 @@ This program it's for only GNU/Linux
 - GNU/Linux
 - make
 - gcc
-- GTK-4.16.7
+- >=GTK-4.10
 - rsync
 - wimlib-imagex (this program divide the big Windows installation file in parts because the restriction of FAT32 filesystem about 4GB per file)
-- dosfstools (very important, it's for create the first partition EFI)
+- dosfstools (it's for create the first partition EFI)
 - ntfs3g (for creating a second partition for user data and set disk label)
 ## Linux Mint/Ubuntu
 ### Build dependency
@@ -54,7 +54,7 @@ NONE Windows hack here like remove TPM requirement. And never will be implemente
 You will see an icon in your desktop. Double click on it and enter your password.  
 Select the .iso file and click on "Create bootable USB"
 ## Terminal
-The graphics user interface just call a script who do the real work with tow parameters, the .iso path and the device path like "/dev/sdb".
+The graphics user interface just call a script who do the real work with two parameters, the .iso path and the device path like "/dev/sdb".
 You can use that script directly from you PATH environment variable
 Example:
 ```
@@ -71,6 +71,6 @@ You need to open that text file and add the path where you are working like "/ho
 ```
 "directory": ".",
 ```
-replace the dot with the new path
+replace the dot with the new path  
 You can ask in:
 [Threads](https://www.threads.net/@oscar0pavon)
