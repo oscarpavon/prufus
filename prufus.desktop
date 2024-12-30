@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=prufus
-Exec=/usr/bin/prufus_launcher
+Exec=/usr/bin/prufus
 Comment=Create bootable USB
 Terminal=false
 PrefersNonDefaultGPU=false

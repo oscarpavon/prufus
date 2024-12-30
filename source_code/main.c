@@ -139,8 +139,9 @@ begin_usb_creation(GObject *source_object, GAsyncResult *res, gpointer user_data
         gtk_drop_down_get_selected(GTK_DROP_DOWN(devices_drop_down));
 
     GError *error_open = NULL;
-    char *make_usb_command[] = {make_usb_script, make_usb_data.iso_path,
-				disks[select_device_index].device, NULL};
+    char *make_usb_command[] = {graphics_sudo_script, make_usb_script,
+      make_usb_data.iso_path,
+			disks[select_device_index].device, NULL};
     
     char* current_directory = g_get_current_dir();
 
