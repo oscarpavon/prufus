@@ -33,8 +33,10 @@ size_t get_usb_disks(void) {
 
         arena_save(&arena, bytes);
         *arena_tail(&arena) = 0;
-
-        if (strpbrk(chunk, "\n")) {
+	
+	// count disks
+        while (*chunk) {
+	    chunk = strpbrk(chunk, "\n") + 1;
             ++disk_count;
         }
     }
