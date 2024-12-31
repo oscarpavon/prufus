@@ -28,11 +28,10 @@ FILE_PATH="`readlink -f "$0"`"
 DIR="`dirname "$FILE_PATH"`"
 
 cp -v $DIR/../prufus/prufus /usr/bin/
+cp -v $DIR/../prufus/scripts/prufus.sh /usr/bin/
 mkdir -p /usr/libexec/prufus
 cp -v $DIR/../prufus/scripts/get_usb_disks.sh /usr/libexec/prufus/
-cp -v $DIR/../prufus/scripts/prufus.sh /usr/bin/
-cp -v $DIR/../prufus/scripts/prufus_sudo /usr/bin/
-cp -v $DIR/../prufus/scripts/prufus_launcher /usr/bin/
+cp -v $DIR/../prufus/scripts/graphics_sudo /usr/libexec/prufus/
 mkdir -p /usr/share/icons/prufus
 cp -v $DIR/../prufus/icon.png /usr/share/icons/prufus/prufus.png
 cp -v $DIR/../prufus/prufus.desktop /usr/share/applications
