@@ -1,6 +1,6 @@
 
 #include "user_interface.h"
-#include "install.h"
+#include "installer.h"
 
 GtkWidget *window;
 GtkWidget *status_label;

@@ -8,22 +8,20 @@ installer:
 	make -C source_code/installer
 
 distributable_directory:
-	mkdir -vp distributable/prufus/scripts
-	mkdir -vp distributable/installer
+	mkdir -vp distributable/prufus_installer/prufus/scripts
+	mkdir -vp distributable/prufus_installer/installer
 
 distributable: distributable_directory prufus installer
-	cp prufus ./distributable/prufus/prufus
-	cp -vr scripts ./distributable/prufus/
-	cp -v icon/icon.png ./distributable/prufus
-	cp -v prufus.desktop ./distributable/prufus
-	cp ./source_code/installer/setup ./distributable/
-	cp ./source_code/installer/graphics_sudo ./distributable/installer/
-	cp ./source_code/installer/install.sh ./distributable/installer/
-	cp ./source_code/installer/prepare.sh ./distributable/installer/
-	cp ./logo.png ./distributable/installer
-	cd distributable
-	zip -r prufus_installer.zip ./distributable/installer/ ./distributable/prufus/ ./distributable
-	mv prufus_installer.zip ./distributable
+	cp prufus ./distributable/prufus_installer/prufus/prufus
+	cp -vr scripts ./distributable/prufus_installer/prufus/
+	cp -v icon/icon.png ./distributable/prufus_installer/prufus
+	cp -v prufus.desktop ./distributable/prufus_installer/prufus/prufus.desktop
+	cp ./source_code/installer/setup ./distributable/prufus_installer/
+	cp ./source_code/installer/graphics_sudo ./distributable/prufus_installer/installer/
+	cp ./source_code/installer/install.sh ./distributable/prufus_installer/installer/
+	cp ./source_code/installer/prepare.sh ./distributable/prufus_installer/installer/
+	cp ./logo.png ./distributable/prufus_installer/installer
+	cd ./distributable/ && zip -r prufus_installer.zip ./prufus_installer/
 
 
 install:
