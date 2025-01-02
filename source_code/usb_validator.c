@@ -88,7 +88,7 @@ static char *arena_tail(arena_t *arena) {
 }
 
 static void terminate_token(char **disk_info) {
-    *disk_info = strpbrk(*disk_info, ",\n");
+    *disk_info = strpbrk(*disk_info, "\t\n");
     **disk_info = 0; // null terminate
     ++(*disk_info);
 }
